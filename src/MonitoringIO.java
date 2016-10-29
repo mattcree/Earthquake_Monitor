@@ -13,17 +13,22 @@ public class MonitoringIO {
         boolean finished = false;
 
         while(!finished) {
-            int current = mainMenu();
-            if (current == 1) {
+
+            int selection = mainMenu();
+            if (selection == 1) {
                 addObservatoryMenu();
             }
-            if (current == 2) {
-                addObservatoryMenu();
+            if (selection == 2) {
+                addEarthquakeMenu();
             }
-            if (current == 3) {
-                addObservatoryMenu();
+            if (selection == 3) {
+                try {
+                    print("" + monitor.getLargestEverEarthquake().getMagnitude());
+                } catch (Exception e){
+                    print("No earthquakes");
+                }
             }
-            if (current == 4) {
+            if (selection == 4) {
                 print("Exiting. Goodbye!");
                 finished = true;
             }
@@ -103,6 +108,12 @@ public class MonitoringIO {
         println("in " + yearStarted + ". It covers " + areaCovered + " square kilometers.");
         println("Press enter to return to the menu.");
         stringPrompt();
+    }
+
+    private static void addEarthquakeMenu() {
+        println("========================================");
+        println("========Enter the Observatory name======");
+        println("========================================");
     }
 
     private static boolean areaValidate(int number) {

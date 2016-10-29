@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=magnitude\ latitude\ longitude\ year
+comment0.target=Earthquake(double,\ double,\ double,\ int)
+comment1.params=
+comment1.target=double\ getMagnitude()
+comment2.params=
+comment2.target=double\ getLatitude()
+comment3.params=
+comment3.target=double\ getLongitude()
+comment4.params=
+comment4.target=int\ getYear()
+numComments=5
