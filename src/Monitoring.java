@@ -1,18 +1,17 @@
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-
 /**
  * Write a description of class Monitoring here.
  *
  * @author Matthew Cree
  * @version October 2016
  */
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
 
 public class Monitoring
 {
-    private Map<String, Observatory> observatories = new HashMap<String, Observatory>();
+    private Map<String, Observatory> observatories = new HashMap<>();
 
     //Adds an Observatory to the observatories list.
     public void addObservatory(Observatory observatory) {
@@ -20,15 +19,17 @@ public class Monitoring
     }
 
     public void addEarthquake(String name, Earthquake earthquake) {
-        this.observatories.get(name).addEarthquake(earthquake);
+        if(this.observatories.containsKey(name)){
+            this.observatories.get(name).addEarthquake(earthquake);
+        }
     }
 
     public Set<String> getObservatoryNames() {
-    return this.observatories.keySet();
+        return this.observatories.keySet();
     }
 
     //Returns the magnitude of the largest earthquake recorded at any Observatory in the list.
-    public Earthquake getLargestEverEarthquake() {
+    public Earthquake getLargestRecordedEarthquake() {
         double biggestMag = 0;
         Earthquake answer = null;
         for(String key : this.observatories.keySet()) {
@@ -42,7 +43,7 @@ public class Monitoring
     }
 
     //Returns the Observatory with the largest average magnitude of earthquake.
-    public Observatory getObservatoryWithLargestAverage() {
+    public Observatory getObservatoryWithLargestAverageMagnitude() {
         double biggestAverage = 0;
         Observatory answer = null;
         for(String key : this.observatories.keySet()) {
