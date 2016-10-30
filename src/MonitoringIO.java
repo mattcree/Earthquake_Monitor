@@ -26,7 +26,8 @@ public class MonitoringIO {
                 try {
                     print("" + monitor.getLargestEverEarthquake().getMagnitude());
                 } catch (Exception e){
-                    print("No earthquakes");
+                    println(e.toString());
+                    returnToMenu();
                 }
             }
             if (selection == 4) {
@@ -36,7 +37,6 @@ public class MonitoringIO {
         }
 
     }
-
     private static int mainMenu() {
         println("========================================");
         println("========EarthquakeMonitor==V0.1=========");
@@ -54,7 +54,6 @@ public class MonitoringIO {
         String input = prompt();
         return parseInt(input);
     }
-
     private static void addObservatoryMenu() {
         Observatory newObservatory;
         String name = null;
@@ -108,7 +107,6 @@ public class MonitoringIO {
 
         returnToMenu();
     }
-
     private static void addEarthquakeMenu() {
         String name = null;
         double magnitude = 0;
@@ -129,9 +127,29 @@ public class MonitoringIO {
             valid = observatoryNameValidate(name);
         }
         valid = false;
+
+        println("========================================");
+        println("=======Enter earthquake magnitude=======");
+        println("========================================");
+        println("Values between 1.0 to 9.9 allowed.");
+        while (!valid) {
+            magnitude = parseMagnitude(prompt());
+            valid = magnitudeValidate(magnitude);
+        }
+        valid = false;
+
+        println("========================================");
+        println("=======Enter earthquake latitude========");
+        println("========================================");
+        println("Values between 1.0 to 9.9 allowed.");
+        while (!valid) {
+            magnitude = parseMagnitude(prompt());
+            valid = magnitudeValidate(magnitude);
+        }
+        valid = false;
+
         returnToMenu();
     }
-
     private static String allPossibleObservatoryChoices() {
         String answer = "";
         if (monitor.getObservatoryNames().isEmpty()) {
@@ -141,7 +159,7 @@ public class MonitoringIO {
                 answer += (capitalise(key) + ", ");
             }
         }
-        return answer;
+        return answer.substring(0,answer.length() - 2);
     }
 
     //Validators
@@ -182,7 +200,17 @@ public class MonitoringIO {
             return false;
         }
     }
-
+    private static boolean magnitudeValidate(Double magnitude) {
+        if(magnitude > 9.9 || magnitude < 1.0) {
+            println("Enter a number between 1.0 and 9.9.");
+            return false;
+        } else if (magnitude.toString().length() > 3) {
+            println("Too many decimal places. Enter number between 1.0 and 9.9.");
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     //Prompts and input components
     private static String capitalise(String word) {
@@ -195,6 +223,13 @@ public class MonitoringIO {
     }
     private static int parseInt(String toInt) {
         return Integer.parseInt(toInt);
+    }
+    private static double parseMagnitude(String toDouble) {
+        if (Pattern.matches("^[0-9]\\.?[0-9]?$",toDouble)) {
+            return Double.parseDouble(toDouble);
+        } else {
+            return 0;
+        }
     }
     private static void returnToMenu() {
         println("Press enter to return to the menu.");
