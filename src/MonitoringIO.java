@@ -37,6 +37,7 @@ public class MonitoringIO {
         }
 
     }
+
     private static int mainMenu() {
         println("========================================");
         println("========EarthquakeMonitor==V0.1=========");
@@ -54,6 +55,7 @@ public class MonitoringIO {
         String input = prompt();
         return parseInt(input);
     }
+
     private static void addObservatoryMenu() {
         Observatory newObservatory;
         String name = null;
@@ -107,6 +109,7 @@ public class MonitoringIO {
 
         returnToMenu();
     }
+
     private static void addEarthquakeMenu() {
         String name = null;
         double magnitude = 0;
@@ -114,6 +117,7 @@ public class MonitoringIO {
         double longitude = 0;
         int year = 0;
         boolean valid = false;
+        Earthquake earthquake;
 
         println("========================================");
         println("========Enter the Observatory name======");
@@ -143,13 +147,41 @@ public class MonitoringIO {
         println("========================================");
         println("Values between 1.0 to 9.9 allowed.");
         while (!valid) {
-            magnitude = parseMagnitude(prompt());
-            valid = magnitudeValidate(magnitude);
+            latitude = parseLatitude(prompt());
+            valid = latitudeValidate(latitude);
         }
         valid = false;
 
+        println("========================================");
+        println("=======Enter earthquake longitude========");
+        println("========================================");
+        println("Values between 1.0 to 9.9 allowed.");
+        while (!valid) {
+            longitude = parseLongitude(prompt());
+            valid = longitudeValidate(longitude);
+        }
+        valid = false;
+
+        println("========================================");
+        println("=======Enter year of Earthquake=========");
+        println("========================================");
+        println("Values between 1.0 to 9.9 allowed.");
+        while (!valid) {
+            year = parseInt(prompt());
+            valid = yearValidate(year);
+        }
+        valid = false;
+
+        earthquake = new Earthquake(magnitude, latitude, longitude, year);
+        monitor.addEarthquake(name, earthquake);
+
+        println("You added a " + magnitude + " magnitude earthquake");
+        println("observed by the " + capitalise(name) + " Observatory in " + year + ".");
+        println("It occurred at " + latitude + " degrees latitude and " + longitude + " degrees longitude.");
+
         returnToMenu();
     }
+
     private static String allPossibleObservatoryChoices() {
         String answer = "";
         if (monitor.getObservatoryNames().isEmpty()) {
@@ -172,6 +204,7 @@ public class MonitoringIO {
             return true;
         }
     }
+
     private static boolean yearValidate(int number) {
         if (number >= 2016 || number <= 1800) {
             println("Valid years are between 1800 and 2016. Please try again.");
@@ -181,6 +214,7 @@ public class MonitoringIO {
             return true;
         }
     }
+
     private static boolean stringValidate(String input) {
         if (!Pattern.matches("^[a-zA-Z]+$", input) && input != null) {
             println("Please try again. Empty input is not allowed.");
@@ -191,6 +225,7 @@ public class MonitoringIO {
             return true;
         }
     }
+
     private static boolean observatoryNameValidate(String choice) {
         if (monitor.getObservatoryNames().contains(choice)) {
             println("Success. Earthquake being added to " + capitalise(choice) + ".");
@@ -200,6 +235,7 @@ public class MonitoringIO {
             return false;
         }
     }
+
     private static boolean magnitudeValidate(Double magnitude) {
         if(magnitude > 9.9 || magnitude < 1.0) {
             println("Enter a number between 1.0 and 9.9.");
@@ -212,18 +248,25 @@ public class MonitoringIO {
         }
     }
 
-    //Prompts and input components
+    //Prompts and formatting components
     private static String capitalise(String word) {
         return word.substring(0,1).toUpperCase() + word.substring(1);
     }
+
     private static String prompt() {
         print("> ");
         String newString = scanner.nextLine().toLowerCase();
         return newString;
     }
+
     private static int parseInt(String toInt) {
-        return Integer.parseInt(toInt);
+        if (Pattern.matches("^[0-9]*$"), toInt) {
+            return Integer.parseInt(toInt);
+        } else {
+            return 0;
+        }
     }
+
     private static double parseMagnitude(String toDouble) {
         if (Pattern.matches("^[0-9]\\.?[0-9]?$",toDouble)) {
             return Double.parseDouble(toDouble);
@@ -231,13 +274,16 @@ public class MonitoringIO {
             return 0;
         }
     }
+
     private static void returnToMenu() {
         println("Press enter to return to the menu.");
         prompt();
     }
+
     private static void println(String message) {
         System.out.println(message);
     }
+
     private static void print(String message) {
         System.out.print(message);
     }
