@@ -157,7 +157,7 @@ public class MonitoringIO {
             }
         }
 
-        private static boolean observatoryNameValidate(String choice) {
+        private static boolean observatoryNameValidate(String choice) { // Ensures no duplicate Observatory names
             if (monitor.getObservatoryNames().contains(choice)) {
                 println("An observatory called " + choice + " already exists.");
                 return false;
