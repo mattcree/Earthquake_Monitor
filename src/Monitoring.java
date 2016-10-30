@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+
 /**
  * Write a description of class Monitoring here.
  *
@@ -19,6 +21,10 @@ public class Monitoring
 
     public void addEarthquake(String name, Earthquake earthquake) {
         this.observatories.get(name).addEarthquake(earthquake);
+    }
+
+    public Set<String> getObservatoryNames() {
+    return this.observatories.keySet();
     }
 
     //Returns the magnitude of the largest earthquake recorded at any Observatory in the list.

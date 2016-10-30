@@ -69,20 +69,6 @@ public class Observatory
         this.earthquakes.add(earthquake);
     }
 
-    /**
-     * @param earthquake
-     * @apiNote Will set earthquake as biggest only if it is larger than
-     * previously recorded earthquakes.
-     */
-    private void updateLargestEarthquakeIfLargestRecorded(Earthquake earthquake) {
-        if(this.largestRecordedEarthquake == null) {
-            this.largestRecordedEarthquake = earthquake;
-        }
-        else if (earthquake.getMagnitude() > this.largestRecordedEarthquake.getMagnitude()) {
-            this.largestRecordedEarthquake = earthquake;
-        }
-    }
-
     public ArrayList<Earthquake> getEarthquakes() {
         return this.earthquakes;
     }
@@ -116,5 +102,19 @@ public class Observatory
             }
         }
         return answer;
+    }
+
+    /**
+     * @param earthquake
+     * @apiNote Will set earthquake as biggest only if it is larger than
+     * previously recorded earthquakes.
+     */
+    private void updateLargestEarthquakeIfLargestRecorded(Earthquake earthquake) {
+        if(this.largestRecordedEarthquake == null) {
+            this.largestRecordedEarthquake = earthquake;
+        }
+        else if (earthquake.getMagnitude() > this.largestRecordedEarthquake.getMagnitude()) {
+            this.largestRecordedEarthquake = earthquake;
+        }
     }
 }

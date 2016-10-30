@@ -8,15 +8,15 @@ public class MonitoringIOTest {
 
     @Test
     public void callingStaticMethod() {
-        MonitoringIO.main(null);
-
-        // Verify What was writen to std out
-
-        // Enter something via std in...
-
-        // Verify new obs created etc...
-
-        // Verify What was writen to std out
+//        MonitoringIO.main(null);
+//
+//        // Verify What was writen to std out
+//
+//        // Enter something via std in...
+//
+//        // Verify new obs created etc...
+//
+//        // Verify What was writen to std out
 
     }
 }
