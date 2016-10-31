@@ -330,7 +330,9 @@ public class MonitoringIO {
 
     private static class StatsMenu {
         private static final int GET_LARGEST_RECORDED_EARTHQUAKE = 1;
-        private static final int EXIT = 4;
+        private static final int GET_OBSERVATORY_WITH_LARGEST_AVERAGE = 2;
+        private static final int GET_ALL_QUAKES_LARGER_THAN_GIVEN_NUMBER = 3;
+        private static final int BACK_TO_MAIN = 4;
 
         public static void show() {
             boolean finished = false;
@@ -341,7 +343,7 @@ public class MonitoringIO {
                     case StatsMenu.GET_LARGEST_RECORDED_EARTHQUAKE:
                         showLargestRecordedEarthquake();
                         break;
-                    case StatsMenu.EXIT:
+                    case StatsMenu.BACK_TO_MAIN:
                         finished = true;
                         break;
                     default:
@@ -352,7 +354,12 @@ public class MonitoringIO {
         }
 
         private static void showLargestRecordedEarthquake() {
-            Earthquake eq = monitor.getLargestRecordedEarthquake();
+            Earthquake eq = null;
+            try {
+                 eq = monitor.getLargestRecordedEarthquake();
+            } catch(Exception e) {
+
+            }
             if(eq != null){
                 // Print summary of earthquake
                 println("Largest Earthquake: "+ eq.getMagnitude());
@@ -368,6 +375,8 @@ public class MonitoringIO {
             println("========================================");
             println("");
             println("1. Show Largest Earthquake.");
+            println("2. .");
+            println("3. Show Largest Earthquake.");
             println("4. Exit");
             println("");
             println("========================================");
@@ -400,7 +409,7 @@ public class MonitoringIO {
     // Input Validation
 
     private static int parseInt(String string) {
-        if (Pattern.matches("^[0-9]*$", string)) {
+        if (Pattern.matches("^[0-9]+$", string)) {
             return Integer.parseInt(string);
         } else {
             return 0;

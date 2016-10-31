@@ -32,6 +32,7 @@ public class Monitoring
     public Earthquake getLargestRecordedEarthquake() {
         double biggestMag = 0;
         Earthquake answer = null;
+
         for(String key : this.observatories.keySet()) {
             double check = observatories.get(key).getLargestMagnitudeEarthquake().getMagnitude();
             if(check > biggestMag) {

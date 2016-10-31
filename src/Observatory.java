@@ -81,8 +81,7 @@ public class Observatory
         if(recordedEarthquakesCount == 0) {
             return 0;
         }
-
-
+        
         double total = 0;
         for(Earthquake quake : this.earthquakes) {
             total += quake.getMagnitude();
