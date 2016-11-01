@@ -38,7 +38,6 @@ public class MonitoringIO {
                         EarthquakeMenu.show();
                         break;
                     case MainMenu.VIEW_STATS:
-                        // TODO: Stats :D !
                         StatsMenu.show();
                         break;
                     case MainMenu.EXIT:
@@ -140,7 +139,8 @@ public class MonitoringIO {
             boolean valid = false;
             double area = 0;
             while (!valid) {
-                area = Double.parseDouble(prompt()); // TODO: Will throw
+
+                area = parseDouble(prompt());
                 valid = areaValidate(area);
             }
             return area;
@@ -158,11 +158,15 @@ public class MonitoringIO {
         }
 
         private static boolean observatoryNameValidate(String choice) { // Ensures no duplicate Observatory names
-            if (monitor.getObservatoryNames().contains(choice)) {
+            if(choice == null || choice.equals("")) {
+                println("Please try again. Empty input is not allowed.");
+                return false;
+            } else if (monitor.getObservatoryNames().contains(choice)) {
                 println("An observatory called " + choice + " already exists.");
                 return false;
             }
-            return true;
+
+            return stringValidate(choice);
         }
 
     }
@@ -221,7 +225,7 @@ public class MonitoringIO {
         }
 
         private static double promptForLongitude() {
-            println("Enter earthquake longitude (Values between 1.0 to 9.9 allowed):");
+            println("Enter earthquake longitude (Values between -90 to 90 allowed):");
             boolean valid = false;
             double longitude = 0;
             while (!valid) {
@@ -373,11 +377,13 @@ public class MonitoringIO {
 
         private static int promptUserForMenuSelection() {
             println("========================================");
+            println("=========Monitoring Statistics==========");
+            println("========================================");
             println("");
             println("1. Show Largest Earthquake.");
             println("2. .");
             println("3. Show Largest Earthquake.");
-            println("4. Exit");
+            println("4. Back to Main Menu");
             println("");
             println("========================================");
             String input = prompt();
@@ -416,6 +422,14 @@ public class MonitoringIO {
         }
     }
 
+    private static double parseDouble(String string) {
+        if (Pattern.matches("^[0-9]+\\.*[0-9]*$", string)) {
+            return Double.parseDouble(string);
+        } else {
+            return 0;
+        }
+    }
+
     private static boolean yearValidate(int number) {
         if (number >= 2016 || number <= 1800) {
             println("Valid years are between 1800 and 2016. Please try again.");
@@ -426,12 +440,12 @@ public class MonitoringIO {
     }
 
     private static boolean stringValidate(String input) {
-        if (!Pattern.matches("^[a-zA-Z]+$", input) && input != null) {
+        if (Pattern.matches("^[a-zA-Z ]+$", input)) {
+            return true;
+        } else {
             println("Please try again. Empty input is not allowed.");
             println("Non-Alphabet characters not allowed.");
             return false;
-        } else {
-            return true;
         }
     }
 
