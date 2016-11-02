@@ -192,7 +192,7 @@ public class MonitoringIO {
 
         private static void showSummary(String name, Earthquake earthquake) {
             println("You added a " + earthquake.getMagnitude() + " magnitude earthquake.");
-            println("- Observed by the " + name + " Observatory in " + earthquake.getYear() + ".");
+            println("- Recorded by the " + name + " Observatory in " + earthquake.getYear() + ".");
             println("- Occurred at " + earthquake.getLatitude() + " degrees latitude and "
                     + earthquake.getLongitude() + " degrees longitude.");
             continuationPrompt();
@@ -225,7 +225,7 @@ public class MonitoringIO {
         }
 
         private static double promptForLongitude() {
-            println("Enter earthquake longitude (Values between -90 to 90 allowed):");
+            println("Enter earthquake longitude (Values between -180 to 180 allowed):");
             boolean valid = false;
             double longitude = 0;
             while (!valid) {
@@ -236,7 +236,7 @@ public class MonitoringIO {
         }
 
         private static double promptForLatitude() {
-            println("Enter earthquake latitude (Values between -180.0 to 180 allowed):");
+            println("Enter earthquake latitude (Values between -90.0 to 90 allowed):");
             boolean valid = false;
             double latitude = 0;
             while (!valid) {
@@ -294,12 +294,12 @@ public class MonitoringIO {
                 double longitude = Double.parseDouble(input);
                 // Check range
                 if(longitude > 180 || longitude < -180) {
-                    println("Enter a number between 180.0 and -180.0.");
+                    println("Enter a number between -180.0 and 180.0.");
                     return Double.NaN;
                 }
                 return longitude;
             } catch(NumberFormatException ex){
-                println("Enter a number between 180.0 and -180.0.");
+                println("Enter a number between -180.0 and 180.0.");
                 return Double.NaN;
             }
         }
@@ -309,12 +309,12 @@ public class MonitoringIO {
                 double latitude = Double.parseDouble(input);
                 // Check range
                 if(latitude > 90 || latitude < -90) {
-                    println("Enter a number between 90 and -90.");
+                    println("Enter a number between -90 and 90.");
                     return Double.NaN;
                 }
                 return latitude;
             } catch(NumberFormatException ex){
-                println("Enter a number between 90.0 and -90.0.");
+                println("Enter a number between -90.0 and 90.0.");
                 return Double.NaN;
             }
         }
@@ -347,6 +347,12 @@ public class MonitoringIO {
                     case StatsMenu.GET_LARGEST_RECORDED_EARTHQUAKE:
                         showLargestRecordedEarthquake();
                         break;
+                    case StatsMenu.GET_OBSERVATORY_WITH_LARGEST_AVERAGE:
+                        showObservatoryWithLargestAverage();
+                        break;
+                    case StatsMenu.GET_ALL_QUAKES_LARGER_THAN_GIVEN_NUMBER:
+                        showAllQuakesLargerThanGivenNumberMenu();
+                        break;
                     case StatsMenu.BACK_TO_MAIN:
                         finished = true;
                         break;
@@ -366,12 +372,19 @@ public class MonitoringIO {
             }
             if(eq != null){
                 // Print summary of earthquake
-                println("Largest Earthquake: "+ eq.getMagnitude());
+                println("The largest Earthquake observed so far was: " + eq.getMagnitude() + " magnitude.");
+                println("- Observed in " + eq.getYear() + ".");
+                println("- Exact location was " + eq.getLatitude() + " degrees latitute and " + eq.getLongitude() + " degrees longitude.");
+                continuationPrompt();
             } else {
                 println("No earthquakes recorded.");
                 continuationPrompt();
             }
         }
+
+        private static void showObservatoryWithLargestAverage() {}
+
+        private static void showAllQuakesLargerThanGivenNumberMenu() {}
 
         // View Helpers
 
@@ -381,8 +394,8 @@ public class MonitoringIO {
             println("========================================");
             println("");
             println("1. Show Largest Earthquake.");
-            println("2. .");
-            println("3. Show Largest Earthquake.");
+            println("2. Observatory with Largest Average");
+            println("3. Show Earthquakes Larger Than Given Number");
             println("4. Back to Main Menu");
             println("");
             println("========================================");
