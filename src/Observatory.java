@@ -86,7 +86,7 @@ public class Observatory
         for(Earthquake quake : this.earthquakes) {
             total += quake.getMagnitude();
         }
-        return total / earthquakes.size();
+        return total / recordedEarthquakesCount;
     }
 
     /**

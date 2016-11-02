@@ -3,6 +3,7 @@
  */
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class MonitoringIO {
 
         private static int promptUserForMenuSelection() {
             println("========================================");
-            println("========EarthquakeMonitor==V0.1=========");
+            println("========Earthquake Monitor 1.0==========");
             println("========================================");
             println("=Select one of the following options by=");
             println("=typing the number and pressing enter.==");
@@ -139,7 +140,6 @@ public class MonitoringIO {
             boolean valid = false;
             double area = 0;
             while (!valid) {
-
                 area = parseDouble(prompt());
                 valid = areaValidate(area);
             }
@@ -175,17 +175,23 @@ public class MonitoringIO {
 
         public static void show() {
             // Prompt user for Observatory / Earthquake fields
-            String name = promptForObservatoryName();
-            double magnitude = promptForMagnitude();
-            double latitude =  promptForLatitude();
-            double longitude =  promptForLongitude();
-            int year = promptForYear();
-            // Create new Observatory
-            Earthquake earthquake = new Earthquake(magnitude, latitude, longitude, year);
-            // Record Earthquake
-            monitor.addEarthquake(name, earthquake);
-            // Show Summary of New Earthquake
-            showSummary(name, earthquake);
+            if (allPossibleObservatoryChoices().equals("none")) {
+                println("Add an observatory first.");
+                continuationPrompt();
+            } else {
+                String name = promptForObservatoryName();
+                double magnitude = promptForMagnitude();
+                double latitude =  promptForLatitude();
+                double longitude =  promptForLongitude();
+                int year = promptForYear();
+                // Create new Observatory
+                Earthquake earthquake = new Earthquake(magnitude, latitude, longitude, year);
+                // Record Earthquake
+                monitor.addEarthquake(name, earthquake);
+                // Show Summary of New Earthquake
+                showSummary(name, earthquake);
+            }
+
         }
 
         // View Helpers
@@ -246,16 +252,7 @@ public class MonitoringIO {
             return latitude;
         }
 
-        private static double promptForMagnitude() {
-            println("Enter earthquake magnitude (Values between 0 to 9.9 allowed):");
-            boolean valid = false;
-            double magnitude = 0;
-            while (!valid) {
-                magnitude = magnitudeValidate(prompt());
-                valid = !Double.isNaN(magnitude);
-            }
-            return magnitude;
-        }
+
 
         // Validation
 
@@ -269,25 +266,7 @@ public class MonitoringIO {
             }
         }
 
-        private static double magnitudeValidate(String input) {
-            try {
-                double magnitude = Double.parseDouble(input);
-                // Check range between 9.9 and 0
-                if(magnitude > 9.9 || magnitude <= 0) {
-                    println("Enter a number between 1.0 and 9.9.");
-                    return Double.NaN;
-                }
-                // Valid inputs must have 2 or less dp
-                if (input.length() > 3) {
-                    println("Too many decimal places. Enter number between 0 and 9.9.");
-                    return Double.NaN;
-                }
-                return magnitude;
-            } catch(NumberFormatException ex){
-                println("Enter number between 1.0 and 9.9.");
-                return Double.NaN;
-            }
-        }
+
 
         private static double longitudeValidate(String input) {
             try {
@@ -325,7 +304,7 @@ public class MonitoringIO {
         private static String allPossibleObservatoryChoices() {
             Set<String> observatoryNames = monitor.getObservatoryNames();
             if (observatoryNames.isEmpty()) {
-                return "None listed";
+                return "none";
             }
 
             return  String.join(", ", monitor.getObservatoryNames());
@@ -367,14 +346,12 @@ public class MonitoringIO {
             Earthquake eq = null;
             try {
                  eq = monitor.getLargestRecordedEarthquake();
-            } catch(Exception e) {
-
-            }
+            } catch(Exception e) {}
             if(eq != null){
                 // Print summary of earthquake
                 println("The largest Earthquake observed so far was: " + eq.getMagnitude() + " magnitude.");
                 println("- Observed in " + eq.getYear() + ".");
-                println("- Exact location was " + eq.getLatitude() + " degrees latitute and " + eq.getLongitude() + " degrees longitude.");
+                println("- Exact location was " + eq.getLatitude() + " degrees latitude and " + eq.getLongitude() + " degrees longitude.");
                 continuationPrompt();
             } else {
                 println("No earthquakes recorded.");
@@ -382,9 +359,44 @@ public class MonitoringIO {
             }
         }
 
-        private static void showObservatoryWithLargestAverage() {}
+        private static void showObservatoryWithLargestAverage() {
+            Observatory ob = null;
+            try {
+                ob = monitor.getObservatoryWithLargestAverageMagnitude();
+            } catch(Exception e) {}
 
-        private static void showAllQuakesLargerThanGivenNumberMenu() {}
+            if(ob != null){
+                // Print summary of Observatory
+                println("The " + ob.getName() + " Observatory in " + ob.getCountry() + " has recorded the highest average earthquake magnitude.");
+                println("- Started recording in " + ob.getStartYear() + ".");
+                println("- Covers " + ob.getArea() + " kilometers squared.");
+                println("- Average recorded magnitude: " + ob.getAverageEarthquakeMagnitude() + ".");
+                printInfoAboutAllEarthquakes(ob.getEarthquakes());
+                continuationPrompt();
+            } else {
+                println("No earthquakes recorded.");
+                continuationPrompt();
+            }
+        }
+
+
+        private static void showAllQuakesLargerThanGivenNumberMenu() {
+            ArrayList<Earthquake> earthquakes = null;
+
+            if (allPossibleObservatoryChoices().equals("none")) {
+                println("No earthquakes recorded");
+            } else {
+                try {
+                    print("Enter a magnitude to view all Earthquakes which had greater magnitudes: ");
+                    earthquakes = monitor.getAllEarthQuakesLargerThanGivenNumber(promptForMagnitude());
+                } catch (Exception e) {}
+            }
+
+            if (earthquakes != null) {
+                printInfoAboutAllEarthquakes(earthquakes);
+            }
+            continuationPrompt();
+        }
 
         // View Helpers
 
@@ -401,6 +413,17 @@ public class MonitoringIO {
             println("========================================");
             String input = prompt();
             return parseInt(input);
+        }
+
+        private static void printInfoAboutAllEarthquakes(ArrayList<Earthquake> earthquakes) {
+            println("========================================");
+            println("Detailed info about all earthquakes follows:");
+            println("========================================");
+            for(Earthquake earthquake : earthquakes) {
+                println("- " + earthquake.getYear() + ": "  + earthquake.getMagnitude() + " magnitude recorded at " + earthquake.getLatitude() + " degrees latitude");
+                println("and " + earthquake.getLongitude() + " degrees longitude.");
+                println("");
+            }
         }
     }
 
@@ -462,6 +485,43 @@ public class MonitoringIO {
         }
     }
 
+    private static double magnitudeValidate(String input) {
+        try {
+            double magnitude = Double.parseDouble(input);
+            // Check range between 9.9 and 0
+            if(magnitude > 9.9 || magnitude <= 0) {
+                println("Enter a number between 0 and 9.9.");
+                return Double.NaN;
+            }
+            // Valid inputs must have 2 or less dp
+            if (input.length() > 3) {
+                println("Too many decimal places. Enter number between 0 and 9.9.");
+                return Double.NaN;
+            }
+            return magnitude;
+        } catch(NumberFormatException ex){
+            println("Enter number between 0 and 9.9.");
+            return Double.NaN;
+        }
+    }
 
+    private static double promptForMagnitude() {
+        println("Enter earthquake magnitude (Values between 0 to 9.9 allowed):");
+        boolean valid = false;
+        double magnitude = 0;
+        while (!valid) {
+            magnitude = magnitudeValidate(prompt());
+            valid = !Double.isNaN(magnitude);
+        }
+        return magnitude;
+    }
 
+    private static String allPossibleObservatoryChoices() {
+        Set<String> observatoryNames = monitor.getObservatoryNames();
+        if (observatoryNames.isEmpty()) {
+            return "none";
+        }
+
+        return  String.join(", ", monitor.getObservatoryNames());
+    }
 }
