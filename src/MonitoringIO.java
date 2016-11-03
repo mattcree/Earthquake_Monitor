@@ -3,6 +3,7 @@
  */
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -78,6 +79,7 @@ public class MonitoringIO {
 
         private static void show() {
             // Prompt user for Observatory fields
+
             String name = promptForObservatoryName("Enter the Observatory Name");
             String countryName = promptForString("Enter the Observatory Country");
             int yearStarted = promptForYear("Enter the year observations began");
@@ -361,6 +363,7 @@ public class MonitoringIO {
 
         private static void showObservatoryWithLargestAverage() {
             Observatory ob = null;
+            DecimalFormat format = new DecimalFormat("#.#");
             try {
                 ob = monitor.getObservatoryWithLargestAverageMagnitude();
             } catch(Exception e) {}
@@ -370,7 +373,7 @@ public class MonitoringIO {
                 println("The " + ob.getName() + " Observatory in " + ob.getCountry() + " has recorded the highest average earthquake magnitude.");
                 println("- Started recording in " + ob.getStartYear() + ".");
                 println("- Covers " + ob.getArea() + " kilometers squared.");
-                println("- Average recorded magnitude: " + ob.getAverageEarthquakeMagnitude() + ".");
+                println("- Average recorded magnitude: " + format.format(ob.getAverageEarthquakeMagnitude())1 + ".");
                 printInfoAboutAllEarthquakes(ob.getEarthquakes());
                 continuationPrompt();
             } else {
