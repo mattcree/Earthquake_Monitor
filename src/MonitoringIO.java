@@ -57,9 +57,7 @@ public class MonitoringIO {
         // View Helpers
 
         private static int promptUserForMenuSelection() {
-            println("========================================");
             println("========Earthquake Monitor 1.0==========");
-            println("========================================");
             println("=Select one of the following options by=");
             println("=typing the number and pressing enter.==");
             println("========================================");
@@ -69,7 +67,6 @@ public class MonitoringIO {
             println("3. See Monitoring statistics.");
             println("4. Exit");
             println("");
-            println("========================================");
             String input = prompt();
             return parseInt(input);
         }
@@ -170,7 +167,6 @@ public class MonitoringIO {
 
             return stringValidate(choice);
         }
-
     }
 
     private static class EarthquakeMenu {
@@ -373,7 +369,7 @@ public class MonitoringIO {
                 println("The " + ob.getName() + " Observatory in " + ob.getCountry() + " has recorded the highest average earthquake magnitude.");
                 println("- Started recording in " + ob.getStartYear() + ".");
                 println("- Covers " + ob.getArea() + " kilometers squared.");
-                println("- Average recorded magnitude: " + format.format(ob.getAverageEarthquakeMagnitude())1 + ".");
+                println("- Average recorded magnitude: " + format.format(ob.getAverageEarthquakeMagnitude()) + ".");
                 printInfoAboutAllEarthquakes(ob.getEarthquakes());
                 continuationPrompt();
             } else {
@@ -382,11 +378,15 @@ public class MonitoringIO {
             }
         }
 
-
         private static void showAllQuakesLargerThanGivenNumberMenu() {
             ArrayList<Earthquake> earthquakes = null;
+            Observatory ob = null;
 
-            if (allPossibleObservatoryChoices().equals("none")) {
+            try {
+                ob = monitor.getObservatoryWithLargestAverageMagnitude();
+            } catch(Exception e) {}
+
+            if (ob == null) {
                 println("No earthquakes recorded");
             } else {
                 try {
@@ -404,7 +404,6 @@ public class MonitoringIO {
         // View Helpers
 
         private static int promptUserForMenuSelection() {
-            println("========================================");
             println("=========Monitoring Statistics==========");
             println("========================================");
             println("");
@@ -413,15 +412,12 @@ public class MonitoringIO {
             println("3. Show Earthquakes Larger Than Given Number");
             println("4. Back to Main Menu");
             println("");
-            println("========================================");
             String input = prompt();
             return parseInt(input);
         }
 
         private static void printInfoAboutAllEarthquakes(ArrayList<Earthquake> earthquakes) {
-            println("========================================");
             println("Detailed info about all earthquakes follows:");
-            println("========================================");
             for(Earthquake earthquake : earthquakes) {
                 println("- " + earthquake.getYear() + ": "  + earthquake.getMagnitude() + " magnitude recorded at " + earthquake.getLatitude() + " degrees latitude");
                 println("and " + earthquake.getLongitude() + " degrees longitude.");
@@ -519,12 +515,4 @@ public class MonitoringIO {
         return magnitude;
     }
 
-    private static String allPossibleObservatoryChoices() {
-        Set<String> observatoryNames = monitor.getObservatoryNames();
-        if (observatoryNames.isEmpty()) {
-            return "none";
-        }
-
-        return  String.join(", ", monitor.getObservatoryNames());
-    }
 }
