@@ -27,7 +27,7 @@ public class Monitoring
      * @param earthquake An Earthquake object.
      */
     public void addEarthquake(String name, Earthquake earthquake) {
-        if(this.observatories.containsKey(name)){
+        if (observatories.containsKey(name)) {
             this.observatories.get(name).addEarthquake(earthquake);
         }
     }
@@ -56,7 +56,7 @@ public class Monitoring
             }
         }
         return answer;
-    }
+}
 
     /**
      * Gets the Observatory whose Earthquakes have the highest average magnitude.
@@ -65,6 +65,7 @@ public class Monitoring
     public Observatory getObservatoryWithLargestAverageMagnitude() {
         double biggestAverage = 0;
         Observatory answer = null;
+
         for(String key : this.observatories.keySet()) {
             double check = observatories.get(key).getAverageEarthquakeMagnitude();
             if(check > biggestAverage) {

@@ -58,4 +58,21 @@ public class Earthquake
     public int getYear() {
         return this.year;
     }
+
+    public void setMagnitude(double magnitude) {
+        this.magnitude = magnitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
 }

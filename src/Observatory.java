@@ -31,20 +31,14 @@ public class Observatory
         this.earthquakes = new ArrayList<>();
     }
 
+
+    //Mutator Methods
     /**
      * Mutator method for Observatory Name. Sets name field.
      * @param name Name of Observatory as a string.
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Accessor method for Observatory Name. Gets name field.
-     * @return Name of Observatory as a string.
-     */
-    public String getName() {
-        return this.name;
     }
 
     /**
@@ -56,19 +50,36 @@ public class Observatory
     }
 
     /**
-     * Accessor method for Country Name. Gets Name of Country Observatory is in.
-     * @return Name of Country as a string.
-     */
-    public String getCountry() {
-        return this.countryName;
-    }
-
-    /**
      * Mutator method for Start Year. Sets name Observatory began recording.
      * @param fromYear Year recording began as an integer.
      */
     public void setStartYear(int fromYear) {
         this.fromYear = fromYear;
+    }
+
+    /**
+     * Mutator method for Area Covered. Sets Area Covered by the Observatory.
+     * @param areaCovered Area Covered as a double.
+     */
+    public void setArea(double areaCovered) {
+        this.areaCovered = areaCovered;
+    }
+
+    //Accessor Methods
+    /**
+     * Accessor method for Observatory Name. Gets name field.
+     * @return Name of Observatory as a string.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Accessor method for Country Name. Gets Name of Country Observatory is in.
+     * @return Name of Country as a string.
+     */
+    public String getCountry() {
+        return this.countryName;
     }
 
     /**
@@ -80,14 +91,6 @@ public class Observatory
     }
 
     /**
-     * Mutator method for Area Covered. Sets Area Covered by the Observatory.
-     * @param areaCovered Area Covered as a double.
-     */
-    public void setArea(double areaCovered) {
-        this.areaCovered = areaCovered;
-    }
-
-    /**
      * Accessor method for Area Covered. Gets Area Covered by the Observatory.
      * @return Area Covered as double.
      */
@@ -95,6 +98,8 @@ public class Observatory
         return this.areaCovered;
     }
 
+
+    //Earthquake List functions and interactions
     /**
      * Accessor method for the ArrayList of Earthquakes
      * @return
@@ -129,13 +134,14 @@ public class Observatory
         if(recordedEarthquakesCount == 0) {
             return 0;
         }
-        
+
         double total = 0;
         for(Earthquake quake : this.earthquakes) {
             total += quake.getMagnitude();
         }
         return total / recordedEarthquakesCount;
     }
+
 
     /**
      * Method to return all Earthquakes larger than a given number.
@@ -153,7 +159,9 @@ public class Observatory
         return answer;
     }
 
-    /** Helper method used by Add Earthquake. Compares the magnitude of an Earthquake to the Largest Recorded and sets
+
+    //Private helper methods
+    /** Used by Add Earthquake. Compares the magnitude of an Earthquake to the Largest Recorded and sets
      * Largest Recorded if that Earthquake's magnitude is larger than Largest Recorded. If none previously recorded, sets that Earthquake as Largest Recorded.
      * @param earthquake Earthquake object.
      *
